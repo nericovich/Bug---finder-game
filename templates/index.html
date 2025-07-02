@@ -3,29 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Код-Ревью с ИИ</title>
+    <title>Платформа для отладки кода</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <div class="container">
-        <h1>Код-Ревью с ИИ 🤖</h1>
-        
-        <div class="task-box">
-            <h2 id="task-title">Генерирую задачу...</h2>
-            <p id="task-description"></p>
+    <div class="main-grid-container">
+        <div id="history-panel" class="side-panel">
+            <h2>История</h2>
+            <div id="history-items">
+                <p>Здесь будет ваша история решений.</p>
+            </div>
         </div>
 
-        <div class="code-editor">
-            <textarea id="code-area" rows="15" placeholder="Исправьте код здесь..."></textarea>
+        <div class="main-content">
+            <h1>Тренажер по отладке Python</h1>
+            <div class="task-box">
+                <h2 id="task-title">Загрузка...</h2>
+                <p id="task-description"></p>
+            </div>
+            <div class="code-editor">
+                <textarea id="code-area" rows="18" placeholder="Исправьте код здесь..."></textarea>
+            </div>
+            <div class="controls">
+                <button id="check-btn">Проверить</button>
+                <button id="new-task-btn">Следующее задание</button>
+            </div>
+            <div id="feedback" class="feedback-box"></div>
         </div>
 
-        <div class="controls">
-            <button id="check-btn">Отправить на ревью</button>
-            <button id="new-task-btn">Следующее задание</button>
+        <div id="theme-panel" class="side-panel">
+            <h2>Темы ошибок</h2>
+            <label for="theme-selector">Выберите категорию:</label>
+            <select id="theme-selector">
+                <option value="общие алгоритмы">Общие алгоритмы</option>
+                <option value="работа со списками">Работа со списками</option>
+                <option value="работа со строками">Работа со строками</option>
+                <option value="логические операторы">Логические операторы</option>
+                <option value="ошибки на единицу">Ошибки "на единицу" (Off-by-one)</option>
+                <option value="словари и множества">Словари и множества</option>
+                <option value="рекурсия">Рекурсия</option>
+            </select>
         </div>
-
-        <div id="feedback" class="feedback-box"></div>
     </div>
 
     <script>
@@ -35,27 +54,56 @@
         const checkBtn = document.getElementById('check-btn');
         const newTaskBtn = document.getElementById('new-task-btn');
         const feedback = document.getElementById('feedback');
+        const themeSelector = document.getElementById('theme-selector');
+        const historyItems = document.getElementById('history-items');
 
         let currentTask = {};
+        let taskHistory = [];
+        let isCurrentTaskAttempted = false;
+
+        function renderHistory() {
+            historyItems.innerHTML = '';
+            if (taskHistory.length === 0) {
+                historyItems.innerHTML = '<p>Здесь будет ваша история решений.</p>';
+                return;
+            }
+            taskHistory.forEach((isCorrect, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                
+                const circle = document.createElement('div');
+                circle.className = `history-circle ${isCorrect ? 'correct' : 'incorrect'}`;
+                circle.textContent = index + 1;
+
+                const text = document.createElement('span');
+                text.textContent = `Задание #${index + 1}: ${isCorrect ? 'Решено' : 'Ошибка'}`;
+
+                historyItem.appendChild(circle);
+                historyItem.appendChild(text);
+                historyItems.appendChild(historyItem);
+            });
+        }
 
         async function fetchNewTask() {
-            feedback.innerHTML = '';
-            feedback.className = 'feedback-box';
+            isCurrentTaskAttempted = false;
+
+            feedback.style.display = 'none';
             taskTitle.textContent = '🧠 Генерирую новую задачу...';
             taskDescription.textContent = '';
             codeArea.value = '';
             checkBtn.disabled = true;
             newTaskBtn.disabled = true;
 
+            const selectedTheme = themeSelector.value;
+
             try {
-                const response = await fetch('/get-task', { cache: 'no-cache' }); 
-                if (!response.ok) throw new Error('Ошибка сервера при получении задачи.');
+                const response = await fetch(`/get-task?theme=${encodeURIComponent(selectedTheme)}`, { cache: 'no-cache' });
+                if (!response.ok) throw new Error('Ошибка сети или сервера.');
                 
                 const task = await response.json();
                 if (task.error) throw new Error(task.error);
 
                 currentTask = task;
-
                 taskTitle.textContent = task.title;
                 taskDescription.textContent = task.task;
                 codeArea.value = task.buggy_code;
@@ -73,39 +121,47 @@
             if (!currentTask.task) return;
 
             const userCode = codeArea.value;
+            feedback.style.display = 'block';
             feedback.className = 'feedback-box';
             feedback.textContent = 'Отправил ваш код на ревью к ИИ...';
             checkBtn.disabled = true;
-            newTaskBtn.disabled = true;
 
             try {
                 const response = await fetch('/check-solution-with-llm', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        code: userCode,
-                        task: currentTask.task
-                    })
+                    body: JSON.stringify({ code: userCode, task: currentTask.task })
                 });
 
                 const result = await response.json();
                 if (result.error) throw new Error(result.error);
                 
                 feedback.innerText = result.explanation; 
-                feedback.className = result.is_correct ? 'feedback-box correct' : 'feedback-box incorrect';
+                feedback.className = `feedback-box ${result.is_correct ? 'correct' : 'incorrect'}`;
+                
+                if (isCurrentTaskAttempted) {
+                    taskHistory[taskHistory.length - 1] = result.is_correct;
+                } else {
+                    taskHistory.push(result.is_correct);
+                    isCurrentTaskAttempted = true;
+                }
+                renderHistory();
                 
             } catch (error) {
                 feedback.innerText = `Произошла ошибка во время ревью: ${error.message}`;
                 feedback.className = 'feedback-box incorrect';
             } finally {
                 checkBtn.disabled = false;
-                newTaskBtn.disabled = false;
             }
         }
 
         newTaskBtn.addEventListener('click', fetchNewTask);
+        themeSelector.addEventListener('change', fetchNewTask);
         checkBtn.addEventListener('click', checkSolution);
-        document.addEventListener('DOMContentLoaded', fetchNewTask);
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHistory();
+            fetchNewTask();
+        });
     </script>
 </body>
 </html>

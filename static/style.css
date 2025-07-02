@@ -1,29 +1,51 @@
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: #f0f2f5;
     color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
     margin: 0;
     padding: 20px;
+    min-height: 100vh;
 }
 
-.container {
+.main-grid-container {
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    gap: 30px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.main-content {
     background-color: #fff;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 800px;
-    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
+
+.side-panel {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    height: fit-content;
+}
+
 
 h1 {
     color: #1d2129;
-    margin-bottom: 20px;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
 }
+
+h2 {
+    color: #1d2129;
+    border-bottom: 2px solid #e4e6eb;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
 
 .task-box {
     background-color: #f7f8fa;
@@ -35,7 +57,9 @@ h1 {
 }
 
 .task-box h2 {
-    margin-top: 0;
+    border: none;
+    padding-bottom: 0;
+    margin-bottom: 10px;
 }
 
 .code-editor textarea {
@@ -78,23 +102,10 @@ button:active:not(:disabled) {
     transform: scale(0.98);
 }
 
-#check-btn {
-    background-color: #42b72a;
-    color: white;
-}
-
-#check-btn:hover:not(:disabled) {
-    background-color: #36a420;
-}
-
-#new-task-btn {
-    background-color: #1877f2;
-    color: white;
-}
-
-#new-task-btn:hover:not(:disabled) {
-    background-color: #166fe5;
-}
+#check-btn { background-color: #42b72a; color: white; }
+#check-btn:hover:not(:disabled) { background-color: #36a420; }
+#new-task-btn { background-color: #1877f2; color: white; }
+#new-task-btn:hover:not(:disabled) { background-color: #166fe5; }
 
 .feedback-box {
     margin-top: 20px;
@@ -109,14 +120,68 @@ button:active:not(:disabled) {
     display: none;
 }
 
-.feedback-box.correct {
-    background-color: #e9f6ea;
-    color: #146b3a;
+.feedback-box.correct { background-color: #e9f6ea; color: #146b3a; display: block; }
+.feedback-box.incorrect { background-color: #fde9e9; color: #a31621; display: block; }
+
+
+.side-panel label {
     display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
 }
 
-.feedback-box.incorrect {
-    background-color: #fde9e9;
-    color: #a31621;
-    display: block;
+.side-panel select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+
+#history-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+}
+
+.history-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.history-circle.correct { background-color: #36a420; }
+.history-circle.incorrect { background-color: #e73434; }
+
+
+@media (max-width: 1200px) {
+    .main-grid-container {
+        grid-template-columns: 200px 1fr 200px;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-grid-container {
+        grid-template-columns: 1fr; 
+    }
+    .side-panel {
+        order: -1; 
+    }
+    #history-panel {
+        order: 1;
+    }
 }
