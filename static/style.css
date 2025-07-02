@@ -1,0 +1,122 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+}
+
+h1 {
+    color: #1d2129;
+    margin-bottom: 20px;
+}
+
+.task-box {
+    background-color: #f7f8fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.task-box h2 {
+    margin-top: 0;
+}
+
+.code-editor textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    resize: vertical;
+}
+
+.controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    font-weight: bold;
+}
+
+button:disabled {
+    background-color: #ccd0d5;
+    cursor: not-allowed;
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+#check-btn {
+    background-color: #42b72a;
+    color: white;
+}
+
+#check-btn:hover:not(:disabled) {
+    background-color: #36a420;
+}
+
+#new-task-btn {
+    background-color: #1877f2;
+    color: white;
+}
+
+#new-task-btn:hover:not(:disabled) {
+    background-color: #166fe5;
+}
+
+.feedback-box {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: left;
+    white-space: pre-wrap;
+    font-family: sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    display: none;
+}
+
+.feedback-box.correct {
+    background-color: #e9f6ea;
+    color: #146b3a;
+    display: block;
+}
+
+.feedback-box.incorrect {
+    background-color: #fde9e9;
+    color: #a31621;
+    display: block;
+}

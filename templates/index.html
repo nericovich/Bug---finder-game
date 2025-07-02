@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Код-Ревью с ИИ</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Код-Ревью с ИИ 🤖</h1>
+        
+        <div class="task-box">
+            <h2 id="task-title">Генерирую задачу...</h2>
+            <p id="task-description"></p>
+        </div>
+
+        <div class="code-editor">
+            <textarea id="code-area" rows="15" placeholder="Исправьте код здесь..."></textarea>
+        </div>
+
+        <div class="controls">
+            <button id="check-btn">Отправить на ревью</button>
+            <button id="new-task-btn">Следующее задание</button>
+        </div>
+
+        <div id="feedback" class="feedback-box"></div>
+    </div>
+
+    <script>
+        const taskTitle = document.getElementById('task-title');
+        const taskDescription = document.getElementById('task-description');
+        const codeArea = document.getElementById('code-area');
+        const checkBtn = document.getElementById('check-btn');
+        const newTaskBtn = document.getElementById('new-task-btn');
+        const feedback = document.getElementById('feedback');
+
+        let currentTask = {};
+
+        async function fetchNewTask() {
+            feedback.innerHTML = '';
+            feedback.className = 'feedback-box';
+            taskTitle.textContent = '🧠 Генерирую новую задачу...';
+            taskDescription.textContent = '';
+            codeArea.value = '';
+            checkBtn.disabled = true;
+            newTaskBtn.disabled = true;
+
+            try {
+                const response = await fetch('/get-task', { cache: 'no-cache' }); 
+                if (!response.ok) throw new Error('Ошибка сервера при получении задачи.');
+                
+                const task = await response.json();
+                if (task.error) throw new Error(task.error);
+
+                currentTask = task;
+
+                taskTitle.textContent = task.title;
+                taskDescription.textContent = task.task;
+                codeArea.value = task.buggy_code;
+                
+            } catch (error) {
+                taskTitle.textContent = 'Ошибка!';
+                taskDescription.textContent = `Не удалось загрузить задачу. ${error.message}`;
+            } finally {
+                checkBtn.disabled = false;
+                newTaskBtn.disabled = false;
+            }
+        }
+
+        async function checkSolution() {
+            if (!currentTask.task) return;
+
+            const userCode = codeArea.value;
+            feedback.className = 'feedback-box';
+            feedback.textContent = 'Отправил ваш код на ревью к ИИ...';
+            checkBtn.disabled = true;
+            newTaskBtn.disabled = true;
+
+            try {
+                const response = await fetch('/check-solution-with-llm', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: userCode,
+                        task: currentTask.task
+                    })
+                });
+
+                const result = await response.json();
+                if (result.error) throw new Error(result.error);
+                
+                feedback.innerText = result.explanation; 
+                feedback.className = result.is_correct ? 'feedback-box correct' : 'feedback-box incorrect';
+                
+            } catch (error) {
+                feedback.innerText = `Произошла ошибка во время ревью: ${error.message}`;
+                feedback.className = 'feedback-box incorrect';
+            } finally {
+                checkBtn.disabled = false;
+                newTaskBtn.disabled = false;
+            }
+        }
+
+        newTaskBtn.addEventListener('click', fetchNewTask);
+        checkBtn.addEventListener('click', checkSolution);
+        document.addEventListener('DOMContentLoaded', fetchNewTask);
+    </script>
+</body>
+</html>
