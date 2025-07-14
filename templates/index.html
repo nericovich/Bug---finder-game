@@ -4,10 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Тренажер по отладке Python</title>
+    <!-- Подключение стилей CodeMirror -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css">
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Подключение скриптов CodeMirror -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
 </head>
 <body>
 
@@ -21,7 +29,6 @@
                 </a>
             </div>
             <nav class="sidebar-nav">
-                <!-- Контейнер для тем будет генерироваться здесь -->
                 <div id="theme-container"></div>
             </nav>
         </aside>
@@ -40,9 +47,7 @@
 
                 <section class="task-section">
                     <h3>Код для отладки</h3>
-                    <div class="code-editor">
-                        <textarea id="code-area" rows="15" placeholder="Исправьте код здесь..."></textarea>
-                    </div>
+                    <div id="code-editor-container"></div>
                 </section>
                 
                 <div id="feedback" class="feedback-box"></div>
@@ -71,19 +76,22 @@
         // --- Элементы DOM ---
         const taskTitle = document.getElementById('task-title');
         const taskDescription = document.getElementById('task-description');
-        const codeArea = document.getElementById('code-area');
         const checkBtn = document.getElementById('check-btn');
         const newTaskBtn = document.getElementById('new-task-btn');
         const feedback = document.getElementById('feedback');
         const themeContainer = document.getElementById('theme-container');
         const historyItems = document.getElementById('history-items');
 
+        // --- Инициализация редактора CodeMirror ---
+        let editor;
+
         // --- Состояние приложения ---
         let currentTask = {};
-        let taskHistory = [];
+        // ИЗМЕНЕНИЕ: Теперь храним полные данные о задаче в истории
+        let taskHistory = []; 
         let isCurrentTaskAttempted = false;
-        
-        // --- ИЗМЕНЕНИЕ: Новая структура тем ---
+        let activeTaskIndex = -1; // Индекс текущего активного задания
+
         const themeSections = [
             {
                 title: "Базовые конструкции Python",
@@ -129,7 +137,7 @@
                 ]
             }
         ];
-        let currentTheme = themeSections[0].subtopics[0].id; // Тема по умолчанию
+        let currentTheme = themeSections[0].subtopics[0].id;
 
         // --- Функции ---
         
@@ -138,15 +146,12 @@
             themeSections.forEach(section => {
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'nav-section';
-
                 const titleH2 = document.createElement('h2');
                 titleH2.className = 'nav-title';
                 titleH2.textContent = section.title;
                 sectionDiv.appendChild(titleH2);
-
                 const listDiv = document.createElement('div');
                 listDiv.className = 'theme-list';
-                
                 section.subtopics.forEach(theme => {
                     const themeItem = document.createElement('a');
                     themeItem.className = 'theme-item';
@@ -157,7 +162,6 @@
                     }
                     listDiv.appendChild(themeItem);
                 });
-                
                 sectionDiv.appendChild(listDiv);
                 themeContainer.appendChild(sectionDiv);
             });
@@ -169,9 +173,13 @@
                 historyItems.innerHTML = '<p class="placeholder">Здесь будет ваша история решений.</p>';
                 return;
             }
-            taskHistory.forEach((isCorrect, index) => {
+            taskHistory.forEach((historyEntry, index) => {
                 const lessonDiv = document.createElement('div');
-                lessonDiv.className = `history-lesson ${isCorrect ? 'correct' : 'incorrect'}`;
+                lessonDiv.className = `history-lesson ${historyEntry.isCorrect ? 'correct' : 'incorrect'}`;
+                lessonDiv.dataset.taskIndex = index; // Добавляем индекс для клика
+                if (index === activeTaskIndex) {
+                    lessonDiv.classList.add('active');
+                }
                 
                 const titleSpan = document.createElement('span');
                 titleSpan.className = 'lesson-title';
@@ -179,12 +187,32 @@
 
                 const statusSpan = document.createElement('span');
                 statusSpan.className = 'lesson-status';
-                statusSpan.textContent = isCorrect ? 'Решено' : 'Ошибка';
+                statusSpan.textContent = historyEntry.isCorrect ? 'Решено' : 'Ошибка';
                 
                 lessonDiv.appendChild(titleSpan);
                 lessonDiv.appendChild(statusSpan);
                 historyItems.appendChild(lessonDiv);
             });
+        }
+        
+        // ИЗМЕНЕНИЕ: Новая функция для отображения задачи по индексу
+        function displayTask(index) {
+            const historyEntry = taskHistory[index];
+            if (!historyEntry) return;
+
+            currentTask = historyEntry.taskData;
+            activeTaskIndex = index;
+
+            taskTitle.textContent = currentTask.title;
+            taskDescription.textContent = currentTask.task;
+            editor.setValue(currentTask.buggy_code || '');
+            
+            // Если мы просматриваем старое задание, блокируем кнопку проверки
+            const isViewingOldTask = index < taskHistory.length - 1 || isCurrentTaskAttempted;
+            checkBtn.disabled = isViewingOldTask;
+            feedback.style.display = 'none';
+
+            renderHistory(); // Перерисовываем историю, чтобы подсветить активный элемент
         }
 
         async function fetchNewTask() {
@@ -192,7 +220,7 @@
             feedback.style.display = 'none';
             taskTitle.textContent = '🧠 Генерирую новую задачу...';
             taskDescription.textContent = '';
-            codeArea.value = '';
+            editor.setValue('');
             checkBtn.disabled = true;
             newTaskBtn.disabled = true;
 
@@ -203,10 +231,9 @@
                 const task = await response.json();
                 if (task.error) throw new Error(task.error);
 
-                currentTask = task;
-                taskTitle.textContent = task.title;
-                taskDescription.textContent = task.task;
-                codeArea.value = task.buggy_code;
+                // Добавляем новое задание в историю, но пока без статуса решения
+                taskHistory.push({ taskData: task, isCorrect: false });
+                displayTask(taskHistory.length - 1); // Отображаем новое задание
                 
             } catch (error) {
                 taskTitle.textContent = 'Ошибка!';
@@ -220,7 +247,7 @@
         async function checkSolution() {
             if (!currentTask.task) return;
 
-            const userCode = codeArea.value;
+            const userCode = editor.getValue();
             feedback.style.display = 'block';
             feedback.className = 'feedback-box';
             feedback.textContent = 'Отправил ваш код на ревью к ИИ...';
@@ -239,37 +266,54 @@
                 feedback.innerText = result.explanation; 
                 feedback.className = `feedback-box ${result.is_correct ? 'correct' : 'incorrect'}`;
                 
-                if (isCurrentTaskAttempted) {
-                    taskHistory[taskHistory.length - 1] = result.is_correct;
-                } else {
-                    taskHistory.push(result.is_correct);
-                    isCurrentTaskAttempted = true;
-                }
+                // Обновляем статус текущего задания в истории
+                taskHistory[activeTaskIndex].isCorrect = result.is_correct;
+                isCurrentTaskAttempted = true;
+                checkBtn.disabled = true; // Блокируем кнопку после первой попытки
                 renderHistory();
                 
             } catch (error) {
                 feedback.innerText = `Произошла ошибка во время ревью: ${error.message}`;
                 feedback.className = 'feedback-box incorrect';
-            } finally {
-                checkBtn.disabled = false;
+                checkBtn.disabled = false; // Разблокируем кнопку в случае ошибки
             }
         }
 
         // --- Обработчики событий ---
+        document.addEventListener('DOMContentLoaded', () => {
+            editor = CodeMirror(document.getElementById('code-editor-container'), {
+                mode: 'python',
+                theme: 'material-darker',
+                lineNumbers: true,
+                tabSize: 4,
+                indentUnit: 4,
+                indentWithTabs: false
+            });
+
+            renderHistory();
+            renderThemes();
+            fetchNewTask();
+        });
+
         newTaskBtn.addEventListener('click', fetchNewTask);
         themeContainer.addEventListener('click', (event) => {
             const clickedItem = event.target.closest('.theme-item');
             if (clickedItem && !clickedItem.classList.contains('active')) {
                 currentTheme = clickedItem.dataset.themeId;
+                taskHistory = []; // Очищаем историю при смене темы
                 renderThemes();
                 fetchNewTask();
             }
         });
         checkBtn.addEventListener('click', checkSolution);
-        document.addEventListener('DOMContentLoaded', () => {
-            renderHistory();
-            renderThemes();
-            fetchNewTask();
+
+        // ИЗМЕНЕНИЕ: Новый обработчик для кликов по истории
+        historyItems.addEventListener('click', (event) => {
+            const clickedItem = event.target.closest('.history-lesson');
+            if (clickedItem) {
+                const index = parseInt(clickedItem.dataset.taskIndex, 10);
+                displayTask(index);
+            }
         });
     </script>
 </body>

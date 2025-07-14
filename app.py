@@ -10,6 +10,53 @@ LOCAL_MODEL_NAME = "llama3:8b"
 
 app = Flask(__name__)
 
+# --- ИЗМЕНЕНИЕ: Структура тем теперь находится на бэкенде ---
+THEME_SECTIONS = [
+    {
+        "title": "Базовые конструкции Python",
+        "subtopics": [
+            { "id": 'ввод и вывод данных, операции с числами и строками, форматирование', "name": 'Ввод и вывод данных. Операции с числами, строками. Форматирование' },
+            { "id": 'условный оператор', "name": 'Условный оператор' },
+            { "id": 'циклы', "name": 'Циклы' },
+            { "id": 'вложенные циклы', "name": 'Вложенные циклы' },
+        ]
+    },
+    {
+        "title": "Коллекции и работа с памятью",
+        "subtopics": [
+            { "id": 'строки, кортежи, списки', "name": 'Строки, кортежи, списки' },
+            { "id": 'множества, словари', "name": 'Множества, словари' },
+            { "id": 'списочные выражения и модель памяти', "name": 'Списочные выражения. Модель памяти' },
+            { "id": 'встроенные возможности коллекций', "name": 'Встроенные возможности по работе с коллекциями' },
+            { "id": 'работа с файлами и json', "name": 'Потоковый ввод/вывод. Работа с файлами. JSON' },
+        ]
+    },
+    {
+        "title": "Функции и их особенности",
+        "subtopics": [
+            { "id": 'функции, области видимости, передача параметров', "name": 'Функции. Области видимости. Передача параметров' },
+            { "id": 'позиционные и именованные аргументы, функции высших порядков, лямбда-функции', "name": 'Позиционные и именованные аргументы. Лямбда-функции' },
+            { "id": 'рекурсия, декораторы, генераторы', "name": 'Рекурсия. Декораторы. Генераторы' },
+        ]
+    },
+    {
+        "title": "Объектно-ориентированное программирование",
+        "subtopics": [
+            { "id": 'классы, поля и методы', "name": 'Объектная модель Python. Классы, поля и методы' },
+            { "id": 'волшебные методы и наследование', "name": 'Волшебные методы, переопределение методов. Наследование' },
+            { "id": 'обработка исключений и модули', "name": 'Модель исключений Python. Try, except. Модули' },
+        ]
+    },
+    {
+        "title": "Библиотеки для обработки данных",
+        "subtopics": [
+            { "id": 'модули math и numpy', "name": 'Модули math и numpy' },
+            { "id": 'модуль pandas', "name": 'Модуль pandas' },
+            { "id": 'модуль requests', "name": 'Модуль requests' },
+        ]
+    }
+]
+
 # Запрещаем кэширование
 @app.after_request
 def add_header(response):
@@ -18,7 +65,7 @@ def add_header(response):
     response.headers['Expires'] = '0'
     return response
 
-# --- ПРОМПТ №1: Для создания задачи (с темой) ---
+# --- ОБНОВЛЕННЫЙ ПРОМПТ №1: Для создания задачи (с запретом тем) ---
 TASK_GENERATION_PROMPT_TEMPLATE = """
 Выступайте в роли технического наставника по Python. Ваша задача — создать учебное задание.
 
@@ -27,33 +74,23 @@ TASK_GENERATION_PROMPT_TEMPLATE = """
 2.  **task**: Четкое описание условия задачи на русском языке.
 3.  **buggy_code**: Код функции на Python, который содержит **обязательную** и **неочевидную** логическую ошибку, связанную с темой "{theme}". Код не должен содержать синтаксических ошибок.
 
-Ваш ответ должен быть представлен СТРОГО в формате JSON-строки без каких-либо вводных слов или комментариев.
+**ВАЖНОЕ ОГРАНИЧЕНИЕ:** В коде и условии задачи ЗАПРЕЩЕНО использовать следующие, более продвинутые концепции: {forbidden_themes}.
+
+Ваш ответ должен быть представлен СТРОГО в формате JSON-строки.
 """
 
-# --- ПРОМПТ №2: Для проверки решения ---
+# --- ПРОМПТ №2: Для проверки решения (без изменений) ---
 SOLUTION_VERIFICATION_PROMPT_TEMPLATE = """
 Проанализируйте предоставленный код на соответствие техническому заданию.
-
-**Техническое задание:**
-{task_description}
-
-**Код для проверки:**
-```python
-{user_code}
-```
-
-**Ваша цель:**
-Определить, соответствует ли код заданию.
-
+**Техническое задание:** {task_description}
+**Код для проверки:** ```python\n{user_code}\n```
+**Ваша цель:** Определить, соответствует ли код заданию.
 Ваш ответ должен быть представлен СТРОГО в формате JSON-строки со следующими ключами:
 1.  **is_correct**: булево значение (true, если код полностью и корректно решает задачу; в противном случае — false).
 2.  **explanation**: Суть ошибки или подтверждение корректности решения на русском языке.
 """
 
 def query_local_model(prompt):
-    """
-    Отправляет запрос к локальной модели через API Ollama.
-    """
     try:
         payload = {
             "model": LOCAL_MODEL_NAME,
@@ -66,9 +103,21 @@ def query_local_model(prompt):
         response_json_string = response.json().get('response', '{}')
         return json.loads(response_json_string)
     except requests.exceptions.ConnectionError:
-        raise ConnectionError("Не удалось подключиться к Ollama. Убедитесь, что Ollama запущен.")
+        raise ConnectionError("Не удалось подключиться к Ollama.")
     except Exception as e:
         raise Exception(f"Ошибка при работе с локальной моделью: {e}")
+
+def get_forbidden_themes(current_theme_id):
+    """Собирает список всех тем, которые идут после текущей."""
+    forbidden = []
+    found_current = False
+    for section in THEME_SECTIONS:
+        for subtopic in section['subtopics']:
+            if found_current:
+                forbidden.append(subtopic['name'])
+            if subtopic['id'] == current_theme_id:
+                found_current = True
+    return ", ".join(forbidden) if forbidden else "нет"
 
 @app.route('/')
 def index():
@@ -76,20 +125,24 @@ def index():
 
 @app.route('/get-task')
 def get_task():
-    """
-    Генерирует задачу с учетом выбранной темы и выполняет двойную проверку.
-    """
-    selected_theme = request.args.get('theme', 'общие алгоритмы')
+    selected_theme = request.args.get('theme', THEME_SECTIONS[0]['subtopics'][0]['id'])
     print(f"Запрошена тема: {selected_theme}")
+
+    forbidden_themes_list = get_forbidden_themes(selected_theme)
+    print(f"Запрещенные темы: {forbidden_themes_list}")
 
     for attempt in range(5):
         try:
-            print(f"Попытка №{attempt + 1}: Генерация задачи по теме '{selected_theme}'...")
-            generation_prompt = TASK_GENERATION_PROMPT_TEMPLATE.format(theme=selected_theme)
+            print(f"Попытка №{attempt + 1}: Генерация задачи...")
+            generation_prompt = TASK_GENERATION_PROMPT_TEMPLATE.format(
+                theme=selected_theme,
+                forbidden_themes=forbidden_themes_list
+            )
             task_data = query_local_model(generation_prompt)
 
-            if not all(k in task_data for k in ['task', 'buggy_code', 'title']):
-                print("Сгенерированные данные неполные, повторная попытка...")
+            # ИЗМЕНЕНИЕ: Проверка на наличие кода
+            if not all(k in task_data for k in ['task', 'buggy_code', 'title']) or not task_data.get('buggy_code', '').strip():
+                print("Сгенерированные данные неполные или отсутствует код, повторная попытка...")
                 continue
 
             print("Двойная проверка: Анализ сгенерированного кода...")
@@ -109,7 +162,7 @@ def get_task():
             continue
     
     print("Не удалось сгенерировать корректную задачу после нескольких попыток.")
-    return jsonify({"error": "Не удалось сгенерировать качественную задачу. Попробуйте снова или выберите другую тему."}), 500
+    return jsonify({"error": "Не удалось сгенерировать качественную задачу. Попробуйте снова."}), 500
 
 @app.route('/check-solution-with-llm', methods=['POST'])
 def check_solution_with_llm():
