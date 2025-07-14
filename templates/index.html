@@ -3,90 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Платформа для отладки кода</title>
+    <title>Тренажер по отладке Python</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="main-grid-container">
-        <div id="history-panel" class="side-panel">
-            <h2>История</h2>
-            <div id="history-items">
-                <p>Здесь будет ваша история решений.</p>
+    <div class="page-container">
+        <!-- Левая боковая панель -->
+        <aside class="sidebar left-sidebar">
+            <div class="sidebar-header">
+                <a href="/" class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 9L14 4H18L22 9L18 14H14L10 9Z" fill="#FFDE40"></path><path d="M4 15L9 10H13L18 15L13 20H9L4 15Z" fill="#40A0FF"></path><path d="M16 22L21 17H25L30 22L25 27H21L16 22Z" fill="#FF4040"></path></svg>
+                    <span>Python Debugger</span>
+                </a>
             </div>
-        </div>
+            <nav class="sidebar-nav">
+                <!-- Контейнер для тем будет генерироваться здесь -->
+                <div id="theme-container"></div>
+            </nav>
+        </aside>
 
-        <div class="main-content">
-            <h1>Тренажер по отладке Python</h1>
-            <div class="task-box">
-                <h2 id="task-title">Загрузка...</h2>
-                <p id="task-description"></p>
-            </div>
-            <div class="code-editor">
-                <textarea id="code-area" rows="18" placeholder="Исправьте код здесь..."></textarea>
-            </div>
-            <div class="controls">
-                <button id="check-btn">Проверить</button>
-                <button id="new-task-btn">Следующее задание</button>
-            </div>
-            <div id="feedback" class="feedback-box"></div>
-        </div>
+        <!-- Основной контент -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1 id="task-title">Загрузка...</h1>
+            </header>
+            
+            <article class="task-article">
+                <section class="task-section">
+                    <h3>Условие задачи</h3>
+                    <p id="task-description"></p>
+                </section>
 
-        <div id="theme-panel" class="side-panel">
-            <h2>Темы ошибок</h2>
-            <label for="theme-selector">Выберите категорию:</label>
-            <select id="theme-selector">
-                <option value="общие алгоритмы">Общие алгоритмы</option>
-                <option value="работа со списками">Работа со списками</option>
-                <option value="работа со строками">Работа со строками</option>
-                <option value="логические операторы">Логические операторы</option>
-                <option value="ошибки на единицу">Ошибки "на единицу" (Off-by-one)</option>
-                <option value="словари и множества">Словари и множества</option>
-                <option value="рекурсия">Рекурсия</option>
-            </select>
-        </div>
+                <section class="task-section">
+                    <h3>Код для отладки</h3>
+                    <div class="code-editor">
+                        <textarea id="code-area" rows="15" placeholder="Исправьте код здесь..."></textarea>
+                    </div>
+                </section>
+                
+                <div id="feedback" class="feedback-box"></div>
+
+                <footer class="task-footer">
+                    <button id="check-btn" class="button-primary">Проверить</button>
+                    <button id="new-task-btn" class="button-secondary">Следующее задание</button>
+                </footer>
+            </article>
+        </main>
+        
+        <!-- Правая боковая панель -->
+        <aside class="sidebar right-sidebar">
+            <nav class="sidebar-nav">
+                 <div class="nav-section">
+                    <h2 class="nav-title">История заданий</h2>
+                    <div id="history-items">
+                        <p class="placeholder">Здесь будет ваша история решений.</p>
+                    </div>
+                </div>
+            </nav>
+        </aside>
     </div>
 
     <script>
+        // --- Элементы DOM ---
         const taskTitle = document.getElementById('task-title');
         const taskDescription = document.getElementById('task-description');
         const codeArea = document.getElementById('code-area');
         const checkBtn = document.getElementById('check-btn');
         const newTaskBtn = document.getElementById('new-task-btn');
         const feedback = document.getElementById('feedback');
-        const themeSelector = document.getElementById('theme-selector');
+        const themeContainer = document.getElementById('theme-container');
         const historyItems = document.getElementById('history-items');
 
+        // --- Состояние приложения ---
         let currentTask = {};
         let taskHistory = [];
         let isCurrentTaskAttempted = false;
+        
+        // --- ИЗМЕНЕНИЕ: Новая структура тем ---
+        const themeSections = [
+            {
+                title: "Базовые конструкции Python",
+                subtopics: [
+                    { id: 'ввод и вывод данных, операции с числами и строками, форматирование', name: 'Ввод и вывод данных. Операции с числами, строками. Форматирование' },
+                    { id: 'условный оператор', name: 'Условный оператор' },
+                    { id: 'циклы', name: 'Циклы' },
+                    { id: 'вложенные циклы', name: 'Вложенные циклы' },
+                ]
+            },
+            {
+                title: "Коллекции и работа с памятью",
+                subtopics: [
+                    { id: 'строки, кортежи, списки', name: 'Строки, кортежи, списки' },
+                    { id: 'множества, словари', name: 'Множества, словари' },
+                    { id: 'списочные выражения и модель памяти', name: 'Списочные выражения. Модель памяти' },
+                    { id: 'встроенные возможности коллекций', name: 'Встроенные возможности по работе с коллекциями' },
+                    { id: 'работа с файлами и json', name: 'Потоковый ввод/вывод. Работа с файлами. JSON' },
+                ]
+            },
+            {
+                title: "Функции и их особенности",
+                subtopics: [
+                    { id: 'функции, области видимости, передача параметров', name: 'Функции. Области видимости. Передача параметров' },
+                    { id: 'позиционные и именованные аргументы, функции высших порядков, лямбда-функции', name: 'Позиционные и именованные аргументы. Лямбда-функции' },
+                    { id: 'рекурсия, декораторы, генераторы', name: 'Рекурсия. Декораторы. Генераторы' },
+                ]
+            },
+            {
+                title: "Объектно-ориентированное программирование",
+                subtopics: [
+                    { id: 'классы, поля и методы', name: 'Объектная модель Python. Классы, поля и методы' },
+                    { id: 'волшебные методы и наследование', name: 'Волшебные методы, переопределение методов. Наследование' },
+                    { id: 'обработка исключений и модули', name: 'Модель исключений Python. Try, except. Модули' },
+                ]
+            },
+            {
+                title: "Библиотеки для обработки данных",
+                subtopics: [
+                    { id: 'модули math и numpy', name: 'Модули math и numpy' },
+                    { id: 'модуль pandas', name: 'Модуль pandas' },
+                    { id: 'модуль requests', name: 'Модуль requests' },
+                ]
+            }
+        ];
+        let currentTheme = themeSections[0].subtopics[0].id; // Тема по умолчанию
+
+        // --- Функции ---
+        
+        function renderThemes() {
+            themeContainer.innerHTML = '';
+            themeSections.forEach(section => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'nav-section';
+
+                const titleH2 = document.createElement('h2');
+                titleH2.className = 'nav-title';
+                titleH2.textContent = section.title;
+                sectionDiv.appendChild(titleH2);
+
+                const listDiv = document.createElement('div');
+                listDiv.className = 'theme-list';
+                
+                section.subtopics.forEach(theme => {
+                    const themeItem = document.createElement('a');
+                    themeItem.className = 'theme-item';
+                    themeItem.textContent = theme.name;
+                    themeItem.dataset.themeId = theme.id;
+                    if (theme.id === currentTheme) {
+                        themeItem.classList.add('active');
+                    }
+                    listDiv.appendChild(themeItem);
+                });
+                
+                sectionDiv.appendChild(listDiv);
+                themeContainer.appendChild(sectionDiv);
+            });
+        }
 
         function renderHistory() {
             historyItems.innerHTML = '';
             if (taskHistory.length === 0) {
-                historyItems.innerHTML = '<p>Здесь будет ваша история решений.</p>';
+                historyItems.innerHTML = '<p class="placeholder">Здесь будет ваша история решений.</p>';
                 return;
             }
             taskHistory.forEach((isCorrect, index) => {
-                const historyItem = document.createElement('div');
-                historyItem.className = 'history-item';
+                const lessonDiv = document.createElement('div');
+                lessonDiv.className = `history-lesson ${isCorrect ? 'correct' : 'incorrect'}`;
                 
-                const circle = document.createElement('div');
-                circle.className = `history-circle ${isCorrect ? 'correct' : 'incorrect'}`;
-                circle.textContent = index + 1;
+                const titleSpan = document.createElement('span');
+                titleSpan.className = 'lesson-title';
+                titleSpan.textContent = `Задание #${index + 1}`;
 
-                const text = document.createElement('span');
-                text.textContent = `Задание #${index + 1}: ${isCorrect ? 'Решено' : 'Ошибка'}`;
-
-                historyItem.appendChild(circle);
-                historyItem.appendChild(text);
-                historyItems.appendChild(historyItem);
+                const statusSpan = document.createElement('span');
+                statusSpan.className = 'lesson-status';
+                statusSpan.textContent = isCorrect ? 'Решено' : 'Ошибка';
+                
+                lessonDiv.appendChild(titleSpan);
+                lessonDiv.appendChild(statusSpan);
+                historyItems.appendChild(lessonDiv);
             });
         }
 
         async function fetchNewTask() {
             isCurrentTaskAttempted = false;
-
             feedback.style.display = 'none';
             taskTitle.textContent = '🧠 Генерирую новую задачу...';
             taskDescription.textContent = '';
@@ -94,10 +196,8 @@
             checkBtn.disabled = true;
             newTaskBtn.disabled = true;
 
-            const selectedTheme = themeSelector.value;
-
             try {
-                const response = await fetch(`/get-task?theme=${encodeURIComponent(selectedTheme)}`, { cache: 'no-cache' });
+                const response = await fetch(`/get-task?theme=${encodeURIComponent(currentTheme)}`, { cache: 'no-cache' });
                 if (!response.ok) throw new Error('Ошибка сети или сервера.');
                 
                 const task = await response.json();
@@ -155,11 +255,20 @@
             }
         }
 
+        // --- Обработчики событий ---
         newTaskBtn.addEventListener('click', fetchNewTask);
-        themeSelector.addEventListener('change', fetchNewTask);
+        themeContainer.addEventListener('click', (event) => {
+            const clickedItem = event.target.closest('.theme-item');
+            if (clickedItem && !clickedItem.classList.contains('active')) {
+                currentTheme = clickedItem.dataset.themeId;
+                renderThemes();
+                fetchNewTask();
+            }
+        });
         checkBtn.addEventListener('click', checkSolution);
         document.addEventListener('DOMContentLoaded', () => {
             renderHistory();
+            renderThemes();
             fetchNewTask();
         });
     </script>
