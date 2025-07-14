@@ -4,11 +4,13 @@ import traceback
 import requests
 from flask import Flask, render_template, jsonify, request
 
+# --- Настройка для локальной модели через Ollama ---
 OLLAMA_API_URL = "http://127.0.0.1:11434/api/generate"
 LOCAL_MODEL_NAME = "llama3:8b" 
 
 app = Flask(__name__)
 
+# Запрещаем кэширование
 @app.after_request
 def add_header(response):
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
@@ -16,6 +18,7 @@ def add_header(response):
     response.headers['Expires'] = '0'
     return response
 
+# --- ПРОМПТ №1: Для создания задачи (с темой) ---
 TASK_GENERATION_PROMPT_TEMPLATE = """
 Выступайте в роли технического наставника по Python. Ваша задача — создать учебное задание.
 
@@ -27,6 +30,7 @@ TASK_GENERATION_PROMPT_TEMPLATE = """
 Ваш ответ должен быть представлен СТРОГО в формате JSON-строки без каких-либо вводных слов или комментариев.
 """
 
+# --- ПРОМПТ №2: Для проверки решения ---
 SOLUTION_VERIFICATION_PROMPT_TEMPLATE = """
 Проанализируйте предоставленный код на соответствие техническому заданию.
 
