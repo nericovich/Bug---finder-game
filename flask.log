@@ -1,0 +1,87 @@
+/Users/kazeevegor/Documents/GitHub/Bug---finder-game/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [21/Jul/2026 23:19:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:26] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:26] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:28] "[35m[1mGET /get-task?theme=условный%20оператор HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:28] "[35m[1mGET /get-task?theme=циклы HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:29] "[35m[1mGET /get-task?theme=вложенные%20циклы HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:30] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:37] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:37] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:37] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:38] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:38] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:38] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:39] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:39] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:39] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:39] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:39] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:39] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:40] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:40] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:40] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:40] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:40] "GET /static/style.css HTTP/1.1" 200 -
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование' через Hugging Face...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: условный оператор
+Генерация задачи по теме 'условный оператор' через Hugging Face...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: циклы
+Генерация задачи по теме 'циклы' через Hugging Face...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Генерация задачи по теме 'вложенные циклы' через Hugging Face...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование' через Hugging Face...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование' через Hugging Face...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование' через Hugging Face...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование' через Hugging Face...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование' через Hugging Face...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование' через Hugging Face...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование' через Hugging Face...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+127.0.0.1 - - [21/Jul/2026 23:19:40] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:40] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:40] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:41] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:41] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:41] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:41] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:41] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:19:41] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:42] "[35m[1mGET /get-task?theme=условный%20оператор HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:42] "[35m[1mGET /get-task?theme=циклы HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:19:43] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:20:13] "[35m[1mGET /get-task?theme=Ñ\x86Ð¸ÐºÐ»Ñ\x8b HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:20:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:20:56] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:20:57] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:20:58] "[35m[1mGET /get-task?theme=условный%20оператор HTTP/1.1[0m" 500 -
+127.0.0.1 - - [21/Jul/2026 23:20:58] "[35m[1mGET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1[0m" 500 -

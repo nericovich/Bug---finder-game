@@ -1,0 +1,275 @@
+/Users/kazeevegor/Documents/GitHub/Bug---finder-game/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5002
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [21/Jul/2026 23:06:06] "GET /get-task?theme=циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:06:11] "POST /check-solution-with-llm HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:06:37] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:06:37] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:06:37] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:07:10] "POST /check-solution-with-llm HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:07:13] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:07:/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/multiprocessing/resource_tracker.py:216: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+ "POST /check-solution-with-llm HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:08:00] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:08:08] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:08:14] "GET /get-task?theme=циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:08:16] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:08:17] "GET /get-task?theme=строки,%20кортежи,%20списки HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:08:17] "GET /get-task?theme=множества,%20словари HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:08:36] "POST /check-solution-with-llm HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:08:52] "POST /check-solution-with-llm HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:08:53] "GET /get-task?theme=позиционные%20и%20именованные%20аргументы,%20функции%20высших%20порядков,%20лямбда-функции HTTP/1.1" 200 -
+Запрошена тема: циклы
+Попытка №1: Генерация задачи по теме 'циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Проверка локального задания: loop_sum_odds
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Проверка локального задания: list_unique
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Проверка локального задания: loop_sum_odds
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Проверка локального задания: loop_sum_odds
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: циклы
+Попытка №1: Генерация задачи по теме 'циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: строки, кортежи, списки
+Попытка №1: Генерация задачи по теме 'строки, кортежи, списки'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: множества, словари
+Попытка №1: Генерация задачи по теме 'множества, словари'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Проверка локального задания: conditional_age
+Проверка локального задания: conditional_age
+Запрошена тема: позиционные и именованные аргументы, функции высших порядков, лямбда-функции
+Попытка №1: Генерация задачи по теме 'позиционные и именованные аргументы, функции высших порядков, лямбда-функции'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: позиционные и именованные аргументы, функции высших порядков, лямбда-функции
+Попытка №1: Генерация задачи по теме 'позиционные и именованные аргументы, функции высших порядков, лямбда-функции'...
+127.0.0.1 - - [21/Jul/2026 23:08:58] "GET /get-task?theme=позиционные%20и%20именованные%20аргументы,%20функции%20высших%20порядков,%20лямбда-функции HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:09:01] "GET /get-task?theme=позиционные%20и%20именованные%20аргументы,%20функции%20высших%20порядков,%20лямбда-функции HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:09:02] "GET /get-task?theme=позиционные%20и%20именованные%20аргументы,%20функции%20высших%20порядков,%20лямбда-функции HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:09:02] "GET /get-task?theme=позиционные%20и%20именованные%20аргументы,%20функции%20высших%20порядков,%20лямбда-функции HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:09:02] "GET /get-task?theme=позиционные%20и%20именованные%20аргументы,%20функции%20высших%20порядков,%20лямбда-функции HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:13:52] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:13:52] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:13:52] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:13:54] "GET /get-task?theme=условный%20оператор HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:13:55] "GET /get-task?theme=циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:13:57] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:00] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:01] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:01] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: позиционные и именованные аргументы, функции высших порядков, лямбда-функции
+Попытка №1: Генерация задачи по теме 'позиционные и именованные аргументы, функции высших порядков, лямбда-функции'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: позиционные и именованные аргументы, функции высших порядков, лямбда-функции
+Попытка №1: Генерация задачи по теме 'позиционные и именованные аргументы, функции высших порядков, лямбда-функции'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: позиционные и именованные аргументы, функции высших порядков, лямбда-функции
+Попытка №1: Генерация задачи по теме 'позиционные и именованные аргументы, функции высших порядков, лямбда-функции'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: позиционные и именованные аргументы, функции высших порядков, лямбда-функции
+Попытка №1: Генерация задачи по теме 'позиционные и именованные аргументы, функции высших порядков, лямбда-функции'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: условный оператор
+Попытка №1: Генерация задачи по теме 'условный оператор'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: циклы
+Попытка №1: Генерация задачи по теме 'циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+127.0.0.1 - - [21/Jul/2026 23:14:01] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:02] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:02] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:02] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:02] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:03] "POST /check-solution-with-llm HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:04] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:04] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:05] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:05] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:05] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:05] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:05] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Проверка локального задания: loop_sum_odds
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+127.0.0.1 - - [21/Jul/2026 23:14:05] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:06] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:06] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:06] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:06] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:06] "GET /get-task?theme=функции,%20области%20видимости,%20передача%20параметров HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:29] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:29] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:29] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:32] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:33] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:33] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:34] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: функции, области видимости, передача параметров
+Попытка №1: Генерация задачи по теме 'функции, области видимости, передача параметров'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+127.0.0.1 - - [21/Jul/2026 23:14:34] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:34] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:34] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:14:34] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:16:42] "GET /get-task?theme=строки,%20кортежи,%20списки HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:16:44] "GET /get-task?theme=множества,%20словари HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:16:45] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:16:45] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:16:45] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:17:33] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:17:33] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:17:33] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:17:35] "GET /get-task?theme=условный%20оператор HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:17:36] "GET /get-task?theme=циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:17:37] "GET /get-task?theme=вложенные%20циклы HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:17:39] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:17:39] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:17:39] "GET /get-task?theme=ввод%20и%20вывод%20данных,%20операции%20с%20числами%20и%20строками,%20форматирование HTTP/1.1" 200 -
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: строки, кортежи, списки
+Попытка №1: Генерация задачи по теме 'строки, кортежи, списки'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: множества, словари
+Попытка №1: Генерация задачи по теме 'множества, словари'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: условный оператор
+Попытка №1: Генерация задачи по теме 'условный оператор'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: циклы
+Попытка №1: Генерация задачи по теме 'циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: вложенные циклы
+Попытка №1: Генерация задачи по теме 'вложенные циклы'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: ввод и вывод данных, операции с числами и строками, форматирование
+Попытка №1: Генерация задачи по теме 'ввод и вывод данных, операции с числами и строками, форматирование'...
+Ошибка генерации Hugging Face: Ошибка при подключении к Hugging Face API: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/gpt2 (Caused by NameResolutionError("HTTPSConnection(host='api-inference.huggingface.co', port=443): Failed to resolve 'api-inference.huggingface.co' ([Errno 8] nodename nor servname provided, or not known)"))
+Запрошена тема: множества, словари
+Попытка №1: Генерация задачи по теме 'множества, словари'...
+127.0.0.1 - - [21/Jul/2026 23:17:55] "GET /get-task?theme=множества,%20словари HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:18:01] "GET /get-task?theme=модуль%20pandas HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:18:04] "GET /get-task?theme=модуль%20pandas HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:18:05] "GET /get-task?theme=модуль%20pandas HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:18:06] "GET /get-task?theme=модуль%20pandas HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:18:06] "GET /get-task?theme=модуль%20pandas HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:18:06] "GET /get-task?theme=модуль%20pandas HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jul/2026 23:18:06] "GET /get-task?theme=модуль%20pandas HTTP/1.1" 200 -

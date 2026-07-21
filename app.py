@@ -1,12 +1,12 @@
 import os
 import json
-import traceback
 import requests
 from flask import Flask, render_template, jsonify, request
 
-# --- Настройка для локальной модели через Ollama ---
-OLLAMA_API_URL = "http://127.0.0.1:11434/api/generate"
-LOCAL_MODEL_NAME = "llama3:8b" 
+# --- Настройка для Hugging Face Inference API ---
+HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN")
+HUGGINGFACE_MODEL_ID = os.getenv("HUGGINGFACE_MODEL_ID", "gpt2")
+HUGGINGFACE_API_URL = f"https://api-inference.huggingface.co/models/{HUGGINGFACE_MODEL_ID}"
 
 app = Flask(__name__)
 
@@ -90,22 +90,66 @@ SOLUTION_VERIFICATION_PROMPT_TEMPLATE = """
 2.  **explanation**: Суть ошибки или подтверждение корректности решения на русском языке.
 """
 
+<<<<<<< Updated upstream
 def query_local_model(prompt):
+=======
+def query_huggingface_model(prompt):
+    """Отправляет запрос к Hugging Face Inference API и возвращает распарсенный JSON."""
+    if not HUGGINGFACE_API_TOKEN:
+        raise EnvironmentError("Не задан HUGGINGFACE_API_TOKEN. Установите переменную окружения перед запуском.")
+
+>>>>>>> Stashed changes
     try:
         payload = {
-            "model": LOCAL_MODEL_NAME,
-            "prompt": prompt,
-            "format": "json",
-            "stream": False
+            "inputs": prompt,
+            "parameters": {
+                "max_new_tokens": 512,
+                "temperature": 0.7,
+                "top_p": 0.9,
+                "return_full_text": False,
+            },
+            "options": {
+                "wait_for_model": True,
+            }
         }
-        response = requests.post(OLLAMA_API_URL, json=payload, timeout=120)
+        response = requests.post(
+            HUGGINGFACE_API_URL,
+            headers={
+                "Authorization": f"Bearer {HUGGINGFACE_API_TOKEN}",
+                "Content-Type": "application/json"
+            },
+            json=payload,
+            timeout=120
+        )
         response.raise_for_status()
+<<<<<<< Updated upstream
         response_json_string = response.json().get('response', '{}')
         return json.loads(response_json_string)
     except requests.exceptions.ConnectionError:
         raise ConnectionError("Не удалось подключиться к Ollama.")
+=======
+
+        response_data = response.json()
+        if isinstance(response_data, dict) and response_data.get("error"):
+            raise Exception(f"Hugging Face API error: {response_data['error']}")
+
+        if isinstance(response_data, list) and response_data and isinstance(response_data[0], dict):
+            response_text = response_data[0].get("generated_text", "")
+        elif isinstance(response_data, dict) and "generated_text" in response_data:
+            response_text = response_data["generated_text"]
+        elif isinstance(response_data, str):
+            response_text = response_data
+        else:
+            raise Exception("Получен неожиданный формат ответа от Hugging Face API.")
+
+        return json.loads(response_text.strip())
+    except requests.exceptions.RequestException as e:
+        raise ConnectionError(f"Ошибка при подключении к Hugging Face API: {e}")
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Не удалось распарсить JSON из ответа модели: {e}\nОтвет: {response_text}")
+>>>>>>> Stashed changes
     except Exception as e:
-        raise Exception(f"Ошибка при работе с локальной моделью: {e}")
+        raise Exception(f"Ошибка при работе с моделью: {e}")
 
 def get_forbidden_themes(current_theme_id):
     """Собирает список всех тем, которые идут после текущей."""
@@ -125,6 +169,7 @@ def index():
 
 @app.route('/get-task')
 def get_task():
+<<<<<<< Updated upstream
     selected_theme = request.args.get('theme', THEME_SECTIONS[0]['subtopics'][0]['id'])
     print(f"Запрошена тема: {selected_theme}")
 
@@ -163,6 +208,27 @@ def get_task():
     
     print("Не удалось сгенерировать корректную задачу после нескольких попыток.")
     return jsonify({"error": "Не удалось сгенерировать качественную задачу. Попробуйте снова."}), 500
+=======
+    """Генерирует задачу по выбранной теме через Hugging Face Inference API."""
+    if not HUGGINGFACE_API_TOKEN:
+        return jsonify({"error": "HUGGINGFACE_API_TOKEN не задан. Установите переменную окружения перед запуском."}), 400
+
+    selected_theme = request.args.get('theme', 'общие алгоритмы')
+    print(f"Запрошена тема: {selected_theme}")
+
+    try:
+        print(f"Генерация задачи по теме '{selected_theme}' через Hugging Face...")
+        generation_prompt = TASK_GENERATION_PROMPT_TEMPLATE.format(theme=selected_theme)
+        task_data = query_huggingface_model(generation_prompt)
+
+        if not all(k in task_data for k in ['task', 'buggy_code', 'title']):
+            raise ValueError("Сгенерированные данные неполные.")
+
+        return jsonify(task_data)
+    except Exception as e:
+        print(f"Ошибка генерации Hugging Face: {e}")
+        return jsonify({"error": str(e)}), 500
+>>>>>>> Stashed changes
 
 @app.route('/check-solution-with-llm', methods=['POST'])
 def check_solution_with_llm():
@@ -177,9 +243,9 @@ def check_solution_with_llm():
             task_description=task_description,
             user_code=user_code
         )
-        print("Запрос к локальной модели: проверка решения...")
-        review_data = query_local_model(verification_prompt)
-        print("Ревью от локальной модели получено.")
+        print("Запрос к Hugging Face: проверка решения...")
+        review_data = query_huggingface_model(verification_prompt)
+        print("Результат проверки получен.")
         return jsonify(review_data)
     except Exception as e:
         print(f"Ошибка при проверке решения: {e}")
