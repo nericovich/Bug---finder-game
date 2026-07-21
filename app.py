@@ -1,23 +1,21 @@
 import os
 import json
-import requests
 from flask import Flask, render_template, jsonify, request
 from openai import OpenAI
 
-# --- Настройка для Hugging Face Router API ---
-HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN")
+# --- Настройка для Groq API ---
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-# Используем официальный клиент OpenAI с новым роутером Hugging Face,
-# чтобы обойти возможные сетевые блокировки (NameResolutionError / Errno 8).
+# Инициализируем клиент OpenAI с базовым URL Groq
 client = None
-if HUGGINGFACE_API_TOKEN:
+if GROQ_API_KEY:
     client = OpenAI(
-        base_url="https://router.huggingface.co/v1",
-        api_key=HUGGINGFACE_API_TOKEN,
+        base_url="https://api.groq.com/openai/v1",
+        api_key=GROQ_API_KEY,
     )
 
-# Рекомендуемая модель для генерации кода и структурированного ответа
-HUGGINGFACE_MODEL_ID = os.getenv("HUGGINGFACE_MODEL_ID", "Qwen/Qwen2.5-Coder-32B-Instruct")
+# Используем быструю модель от Groq
+GROQ_MODEL_ID = os.getenv("GROQ_MODEL_ID", "llama-3.3-70b-versatile")
 
 app = Flask(__name__)
 
@@ -91,7 +89,8 @@ TASK_GENERATION_PROMPT_TEMPLATE = """
 """
 
 SOLUTION_VERIFICATION_PROMPT_TEMPLATE = """
-Проанализируйте предоставленный код на соответствие техническому заданию.
+Проанализируйте предоставленный код на соответствие техническому заданию. Пользователь уже выполнял проверку ранее, но продолжает работу/улучшение кода. Учти предыдущие попытки и оцени актуальный вариант.
+
 **Техническое задание:** {task_description}
 **Код для проверки:** ```python\n{user_code}\n```
 **Ваша цель:** Определить, соответствует ли код заданию.
@@ -100,14 +99,14 @@ SOLUTION_VERIFICATION_PROMPT_TEMPLATE = """
 2.  **explanation**: Суть ошибки или подтверждение корректности решения на русском языке.
 """
 
-def query_huggingface_model(prompt):
-    """Отправляет запрос к Hugging Face через OpenAI SDK роутер и возвращает распарсенный JSON."""
-    if not HUGGINGFACE_API_TOKEN or not client:
-        raise EnvironmentError("Не задан HUGGINGFACE_API_TOKEN. Установите переменную окружения перед запуском.")
+def query_groq_model(prompt):
+    """Отправляет запрос к Groq API через OpenAI SDK и возвращает распарсенный JSON."""
+    if not GROQ_API_KEY or not client:
+        raise EnvironmentError("Не задан GROQ_API_KEY. Установите переменную окружения перед запуском.")
 
     try:
         completion = client.chat.completions.create(
-            model=HUGGINGFACE_MODEL_ID,
+            model=GROQ_MODEL_ID,
             messages=[
                 {
                     "role": "user",
@@ -122,7 +121,6 @@ def query_huggingface_model(prompt):
         if not response_text:
             raise Exception("Модель вернула пустой ответ.")
         
-        # Пытаемся найти JSON-блок, если модель добавила лишний текст или маркеры кодовой зоны
         clean_text = response_text.strip()
         if clean_text.startswith("```json"):
             clean_text = clean_text[7:]
@@ -142,7 +140,7 @@ def query_huggingface_model(prompt):
     except json.JSONDecodeError as e:
         raise ValueError(f"Не удалось распарсить JSON из ответа модели: {e}\nОтвет: {response_text}")
     except Exception as e:
-        raise Exception(f"Ошибка при работе с моделью через Hugging Face Router: {e}")
+        raise Exception(f"Ошибка при работе с моделью через Groq API: {e}")
 
 def get_forbidden_themes(current_theme_id):
     """Собирает список всех тем, которые идут после текущей."""
@@ -162,9 +160,9 @@ def index():
 
 @app.route('/get-task')
 def get_task():
-    """Генерирует задачу по выбранной теме через Hugging Face Router API."""
-    if not HUGGINGFACE_API_TOKEN:
-        return jsonify({"error": "HUGGINGFACE_API_TOKEN не задан. Установите переменную окружения перед запуском."}), 400
+    """Генерирует задачу по выбранной теме через Groq API."""
+    if not GROQ_API_KEY:
+        return jsonify({"error": "GROQ_API_KEY не задан. Установите переменную окружения перед запуском."}), 400
 
     selected_theme = request.args.get('theme', 'ввод и вывод данных, операции с числами и строками, форматирование')
     print(f"Запрошена тема: {selected_theme}")
@@ -173,19 +171,19 @@ def get_task():
     print(f"Запрещенные темы: {forbidden_themes_list}")
 
     try:
-        print(f"Генерация задачи по теме '{selected_theme}' через Hugging Face Router...")
+        print(f"Генерация задачи по теме '{selected_theme}' через Groq API...")
         generation_prompt = TASK_GENERATION_PROMPT_TEMPLATE.format(
             theme=selected_theme,
             forbidden_themes=forbidden_themes_list
         )
-        task_data = query_huggingface_model(generation_prompt)
+        task_data = query_groq_model(generation_prompt)
 
         if not all(k in task_data for k in ['task', 'buggy_code', 'title']):
             raise ValueError("Сгенерированные данные неполные (отсутствуют обязательные поля в JSON).")
 
         return jsonify(task_data)
     except Exception as e:
-        print(f"Ошибка генерации Hugging Face: {e}")
+        print(f"Ошибка генерации Groq: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/check-solution-with-llm', methods=['POST'])
@@ -201,12 +199,12 @@ def check_solution_with_llm():
             task_description=task_description,
             user_code=user_code
         )
-        print("Запрос к Hugging Face: проверка решения...")
-        review_data = query_huggingface_model(verification_prompt)
+        print("Запрос к Groq: проверка решения...")
+        review_data = query_groq_model(verification_prompt)
         print("Результат проверки получен.")
         return jsonify(review_data)
     except Exception as e:
-        print(f"Ошибка при проверке решения: {e}")
+        print(f"Ошибка при проверке решения через Groq: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
