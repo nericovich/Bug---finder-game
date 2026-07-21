@@ -2,15 +2,26 @@ import os
 import json
 import requests
 from flask import Flask, render_template, jsonify, request
+from openai import OpenAI
 
-# --- Настройка для Hugging Face Inference API ---
+# --- Настройка для Hugging Face Router API ---
 HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN")
-HUGGINGFACE_MODEL_ID = os.getenv("HUGGINGFACE_MODEL_ID", "gpt2")
-HUGGINGFACE_API_URL = f"https://api-inference.huggingface.co/models/{HUGGINGFACE_MODEL_ID}"
+
+# Используем официальный клиент OpenAI с новым роутером Hugging Face,
+# чтобы обойти возможные сетевые блокировки (NameResolutionError / Errno 8).
+client = None
+if HUGGINGFACE_API_TOKEN:
+    client = OpenAI(
+        base_url="https://router.huggingface.co/v1",
+        api_key=HUGGINGFACE_API_TOKEN,
+    )
+
+# Рекомендуемая модель для генерации кода и структурированного ответа
+HUGGINGFACE_MODEL_ID = os.getenv("HUGGINGFACE_MODEL_ID", "Qwen/Qwen2.5-Coder-32B-Instruct")
 
 app = Flask(__name__)
 
-# --- ИЗМЕНЕНИЕ: Структура тем теперь находится на бэкенде ---
+# --- Структура тем ---
 THEME_SECTIONS = [
     {
         "title": "Базовые конструкции Python",
@@ -65,7 +76,7 @@ def add_header(response):
     response.headers['Expires'] = '0'
     return response
 
-# --- ОБНОВЛЕННЫЙ ПРОМПТ №1: Для создания задачи (с запретом тем) ---
+# --- ПРОМПТЫ ---
 TASK_GENERATION_PROMPT_TEMPLATE = """
 Выступайте в роли технического наставника по Python. Ваша задача — создать учебное задание.
 
@@ -76,10 +87,9 @@ TASK_GENERATION_PROMPT_TEMPLATE = """
 
 **ВАЖНОЕ ОГРАНИЧЕНИЕ:** В коде и условии задачи ЗАПРЕЩЕНО использовать следующие, более продвинутые концепции: {forbidden_themes}.
 
-Ваш ответ должен быть представлен СТРОГО в формате JSON-строки.
+Ваш ответ должен быть представлен СТРОГО в формате JSON-строки (без дополнительных комментариев от себя, только валидный JSON).
 """
 
-# --- ПРОМПТ №2: Для проверки решения (без изменений) ---
 SOLUTION_VERIFICATION_PROMPT_TEMPLATE = """
 Проанализируйте предоставленный код на соответствие техническому заданию.
 **Техническое задание:** {task_description}
@@ -90,66 +100,49 @@ SOLUTION_VERIFICATION_PROMPT_TEMPLATE = """
 2.  **explanation**: Суть ошибки или подтверждение корректности решения на русском языке.
 """
 
-<<<<<<< Updated upstream
-def query_local_model(prompt):
-=======
 def query_huggingface_model(prompt):
-    """Отправляет запрос к Hugging Face Inference API и возвращает распарсенный JSON."""
-    if not HUGGINGFACE_API_TOKEN:
+    """Отправляет запрос к Hugging Face через OpenAI SDK роутер и возвращает распарсенный JSON."""
+    if not HUGGINGFACE_API_TOKEN or not client:
         raise EnvironmentError("Не задан HUGGINGFACE_API_TOKEN. Установите переменную окружения перед запуском.")
 
->>>>>>> Stashed changes
     try:
-        payload = {
-            "inputs": prompt,
-            "parameters": {
-                "max_new_tokens": 512,
-                "temperature": 0.7,
-                "top_p": 0.9,
-                "return_full_text": False,
-            },
-            "options": {
-                "wait_for_model": True,
-            }
-        }
-        response = requests.post(
-            HUGGINGFACE_API_URL,
-            headers={
-                "Authorization": f"Bearer {HUGGINGFACE_API_TOKEN}",
-                "Content-Type": "application/json"
-            },
-            json=payload,
-            timeout=120
+        completion = client.chat.completions.create(
+            model=HUGGINGFACE_MODEL_ID,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            max_tokens=1000,
+            temperature=0.7
         )
-        response.raise_for_status()
-<<<<<<< Updated upstream
-        response_json_string = response.json().get('response', '{}')
-        return json.loads(response_json_string)
-    except requests.exceptions.ConnectionError:
-        raise ConnectionError("Не удалось подключиться к Ollama.")
-=======
+        
+        response_text = completion.choices[0].message.content
+        if not response_text:
+            raise Exception("Модель вернула пустой ответ.")
+        
+        # Пытаемся найти JSON-блок, если модель добавила лишний текст или маркеры кодовой зоны
+        clean_text = response_text.strip()
+        if clean_text.startswith("```json"):
+            clean_text = clean_text[7:]
+        elif clean_text.startswith("```"):
+            clean_text = clean_text[3:]
+        if clean_text.endswith("```"):
+            clean_text = clean_text[:-3]
 
-        response_data = response.json()
-        if isinstance(response_data, dict) and response_data.get("error"):
-            raise Exception(f"Hugging Face API error: {response_data['error']}")
-
-        if isinstance(response_data, list) and response_data and isinstance(response_data[0], dict):
-            response_text = response_data[0].get("generated_text", "")
-        elif isinstance(response_data, dict) and "generated_text" in response_data:
-            response_text = response_data["generated_text"]
-        elif isinstance(response_data, str):
-            response_text = response_data
+        json_start = clean_text.find('{')
+        json_end = clean_text.rfind('}') + 1
+        if json_start != -1 and json_end != -1:
+            clean_json_str = clean_text[json_start:json_end]
         else:
-            raise Exception("Получен неожиданный формат ответа от Hugging Face API.")
+            clean_json_str = clean_text
 
-        return json.loads(response_text.strip())
-    except requests.exceptions.RequestException as e:
-        raise ConnectionError(f"Ошибка при подключении к Hugging Face API: {e}")
+        return json.loads(clean_json_str.strip())
     except json.JSONDecodeError as e:
         raise ValueError(f"Не удалось распарсить JSON из ответа модели: {e}\nОтвет: {response_text}")
->>>>>>> Stashed changes
     except Exception as e:
-        raise Exception(f"Ошибка при работе с моделью: {e}")
+        raise Exception(f"Ошибка при работе с моделью через Hugging Face Router: {e}")
 
 def get_forbidden_themes(current_theme_id):
     """Собирает список всех тем, которые идут после текущей."""
@@ -169,66 +162,31 @@ def index():
 
 @app.route('/get-task')
 def get_task():
-<<<<<<< Updated upstream
-    selected_theme = request.args.get('theme', THEME_SECTIONS[0]['subtopics'][0]['id'])
+    """Генерирует задачу по выбранной теме через Hugging Face Router API."""
+    if not HUGGINGFACE_API_TOKEN:
+        return jsonify({"error": "HUGGINGFACE_API_TOKEN не задан. Установите переменную окружения перед запуском."}), 400
+
+    selected_theme = request.args.get('theme', 'ввод и вывод данных, операции с числами и строками, форматирование')
     print(f"Запрошена тема: {selected_theme}")
 
     forbidden_themes_list = get_forbidden_themes(selected_theme)
     print(f"Запрещенные темы: {forbidden_themes_list}")
 
-    for attempt in range(5):
-        try:
-            print(f"Попытка №{attempt + 1}: Генерация задачи...")
-            generation_prompt = TASK_GENERATION_PROMPT_TEMPLATE.format(
-                theme=selected_theme,
-                forbidden_themes=forbidden_themes_list
-            )
-            task_data = query_local_model(generation_prompt)
-
-            # ИЗМЕНЕНИЕ: Проверка на наличие кода
-            if not all(k in task_data for k in ['task', 'buggy_code', 'title']) or not task_data.get('buggy_code', '').strip():
-                print("Сгенерированные данные неполные или отсутствует код, повторная попытка...")
-                continue
-
-            print("Двойная проверка: Анализ сгенерированного кода...")
-            verification_prompt = SOLUTION_VERIFICATION_PROMPT_TEMPLATE.format(
-                task_description=task_data['task'],
-                user_code=task_data['buggy_code']
-            )
-            review_data = query_local_model(verification_prompt)
-
-            if not review_data.get('is_correct'):
-                print("Проверка пройдена: Код действительно содержит ошибку.")
-                return jsonify(task_data)
-            else:
-                print("Двойная проверка не пройдена: сгенерированный код не содержит ошибки. Повторная генерация...")
-        except Exception as e:
-            print(f"Ошибка на попытке №{attempt + 1}: {e}")
-            continue
-    
-    print("Не удалось сгенерировать корректную задачу после нескольких попыток.")
-    return jsonify({"error": "Не удалось сгенерировать качественную задачу. Попробуйте снова."}), 500
-=======
-    """Генерирует задачу по выбранной теме через Hugging Face Inference API."""
-    if not HUGGINGFACE_API_TOKEN:
-        return jsonify({"error": "HUGGINGFACE_API_TOKEN не задан. Установите переменную окружения перед запуском."}), 400
-
-    selected_theme = request.args.get('theme', 'общие алгоритмы')
-    print(f"Запрошена тема: {selected_theme}")
-
     try:
-        print(f"Генерация задачи по теме '{selected_theme}' через Hugging Face...")
-        generation_prompt = TASK_GENERATION_PROMPT_TEMPLATE.format(theme=selected_theme)
+        print(f"Генерация задачи по теме '{selected_theme}' через Hugging Face Router...")
+        generation_prompt = TASK_GENERATION_PROMPT_TEMPLATE.format(
+            theme=selected_theme,
+            forbidden_themes=forbidden_themes_list
+        )
         task_data = query_huggingface_model(generation_prompt)
 
         if not all(k in task_data for k in ['task', 'buggy_code', 'title']):
-            raise ValueError("Сгенерированные данные неполные.")
+            raise ValueError("Сгенерированные данные неполные (отсутствуют обязательные поля в JSON).")
 
         return jsonify(task_data)
     except Exception as e:
         print(f"Ошибка генерации Hugging Face: {e}")
         return jsonify({"error": str(e)}), 500
->>>>>>> Stashed changes
 
 @app.route('/check-solution-with-llm', methods=['POST'])
 def check_solution_with_llm():
